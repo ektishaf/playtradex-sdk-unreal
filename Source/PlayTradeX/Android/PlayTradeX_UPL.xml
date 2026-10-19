@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<init>
+		<log text="PlayTradeX: Android UPL initialized"/>
+	</init>
+
+	<gradleCopies>
+
+		<!-- PlayTradeX Java integration -->
+		<copyDir
+            src="$S(PluginDir)/Java"
+            dst="$S(BuildDir)/gradle/app/src/main/java"/>
+
+		<!-- PlayTradeX Android assets -->
+		<copyDir
+            src="$S(PluginDir)/Assets"
+            dst="$S(BuildDir)/gradle/app/src/main/assets"/>
+
+		<!-- PlayTradeX native Android SDK -->
+		<copyFile
+            src="$S(PluginDir)/../../../ThirdParty/PlayTradeXSDK/Android/arm64-v8a/libPlayTradeXSDK.so"
+            dst="$S(BuildDir)/gradle/app/src/main/jniLibs/arm64-v8a/libPlayTradeXSDK.so"/>
+
+	</gradleCopies>
+
+	<androidManifestUpdates>
+
+		<addElements tag="application">
+
+			<activity
+                android:name="com.playtradex.PlayTradeXFilePickerActivity"
+                android:exported="false"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<gameActivityClassAdditions>
+		<insert>
+			<![CDATA[
+
+        public void AndroidThunkJava_PlayTradeX_Initialize()
+        {
+            com.playtradex.PlayTradeXAndroid.initialize(
+                getApplicationContext()
+            );
+        }
+
+            ]]>
+		</insert>
+	</gameActivityClassAdditions>
+
+</root>
